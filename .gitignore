@@ -1,0 +1,82 @@
+# Binários gerados
+bin/
+obj/
+
+# Arquivos de compilação
+*.exe
+*.dll
+*.pdb
+
+# Arquivos temporários
+*.ipch
+*.user
+*.bak
+*.cache
+*.log
+*.vscode
+*.vs
+
+# Diretório de pacotes NuGet
+packages/
+
+# Arquivos de configuração de IDE
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
+
+# Arquivos de compilação de Visual Studio
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+
+# ReSharper
+_ReSharper*/
+*.ReSharper*
+*.resharper.user
+
+# Rider
+.idea/
+
+# Projeto de migrador de bancos de dados
+*.mdb
+*.ldb
+
+# Arquivos de depuração
+*.pdb
+*.dbmdl
+*.jfm
+*.mdf
+*.ldf
+
+# Arquivos de cache e arquivos binários intermediários
+*.cache
+*.log
+*.dll
+*.meta
+*.exe
+*.pdb
+*.user
+*.suo
+*.tmp
+*.bak
+*.cache
+*.log
+*.vspscc
+*.vssscc
