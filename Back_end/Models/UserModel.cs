@@ -1,18 +1,18 @@
-﻿namespace Back_end.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Back_end.Models
 {
     public class UserModel
     {
-        public UserModel(int idUser, string name, string email, string password)
-        {
-            IdUser = idUser;
-            Name = name;
-            Email = email;
-            Password = password;
-        }
 
         public int IdUser { get; set; }
+        
+        [Required]
         public string Name { get; set; }
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+        [Required]
         public string Password { get; set; }
 
 
