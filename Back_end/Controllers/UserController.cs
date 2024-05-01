@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Back_end.Data;
 
+
 namespace Back_end.Controllers
 {
     [ApiController]
@@ -21,15 +22,17 @@ namespace Back_end.Controllers
         [HttpGet]
         public ActionResult<List<UserModel>> AllUsers()
         {
-            if (AllUsers() == null)
+            var users = _context.Users.ToList();
+            if (users == null || users.Count == 0)
             {
                 return NotFound();
             }
             else
             {
-                return _context.Users.ToList();
+                return users;
             }
         }
+
         
         [HttpGet("{id}")]
         public ActionResult<UserModel> GetUser(int id)

@@ -1,86 +1,84 @@
-﻿using Back_end.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using Back_end.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Back_end.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Back_end.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class PlaylistController : ControllerBase
     {
         private readonly LiveMusicDbContext _context;
+
         public PlaylistController(LiveMusicDbContext context)
         {
             _context = context;
         }
 
-        //Crud
+        // GET: api/Playlist
         [HttpGet]
-        public ActionResult<List<PlaylistModel>> AllPlaylists()
+        public ActionResult<IEnumerable<PlaylistModel>> GetPlaylists()
         {
-            var playlists = _context.Playlists.ToList();
-            if (playlists == null || !playlists.Any())
-            {
-                return NotFound();
-            }
-            else
-            {
-                return playlists;
-            }
+            return _context.Playlists.ToList();
         }
-        
+
+        // GET: api/Playlist/5
         [HttpGet("{id}")]
         public ActionResult<PlaylistModel> GetPlaylist(int id)
         {
             var playlist = _context.Playlists.Find(id);
+
             if (playlist == null)
             {
                 return NotFound();
             }
-            else
-            {
-                return playlist;
-            }
+
+            return playlist;
         }
-        
+
+        // POST: api/Playlist
         [HttpPost]
-        public ActionResult<PlaylistModel> AddPlaylist(PlaylistModel playlist)
+        public ActionResult<PlaylistModel> PostPlaylist(PlaylistModel playlist)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             _context.Playlists.Add(playlist);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetPlaylist), new {id = playlist.IdPlaylist}, playlist);
+
+            return CreatedAtAction(nameof(GetPlaylist), new { id = playlist.IdPlaylist }, playlist);
         }
-        
+
+        // PUT: api/Playlist/5
         [HttpPut("{id}")]
-        public ActionResult<PlaylistModel> UpdatePlaylist(int id, PlaylistModel playlist)
+        public IActionResult PutPlaylist(int id, PlaylistModel playlist)
         {
             if (id != playlist.IdPlaylist)
             {
                 return BadRequest();
             }
+
             _context.Entry(playlist).State = EntityState.Modified;
             _context.SaveChanges();
+
             return NoContent();
         }
-        
+
+        // DELETE: api/Playlist/5
         [HttpDelete("{id}")]
-        public ActionResult<PlaylistModel> DeletePlaylist(int id)
+        public IActionResult DeletePlaylist(int id)
         {
             var playlist = _context.Playlists.Find(id);
+
             if (playlist == null)
             {
                 return NotFound();
             }
+
             _context.Playlists.Remove(playlist);
             _context.SaveChanges();
-            return playlist;
+
+            return NoContent();
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Reprodutor de Música</title>
+    <script>
+        function updateMusicSrc(event) {
+            event.preventDefault(); // Evita o recarregamento da página
+            var musicId = document.getElementById('musicId').value;
+            var audioElement = document.getElementById('audioElement');
+            audioElement.src = "https://localhost:7075/api/music/play/" + musicId;
+            setTimeout(function() {
+                audioElement.play();
+            }, 200); // Toca a música após um atraso de 200 milissegundos
+        }
+    </script>
+</head>
+<body>
+<h1>Reprodutor de Música</h1>
+<form onsubmit="updateMusicSrc(event)">
+    <label for="musicId">ID da Música:</label>
+    <input type="text" id="musicId" name="musicId">
+    <input type="submit" value="Confirmar">
+</form>
+<audio controls id="audioElement">
+    <source src="https://localhost:7075/api/music/play/2" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+</audio>
+</body>
+</html>

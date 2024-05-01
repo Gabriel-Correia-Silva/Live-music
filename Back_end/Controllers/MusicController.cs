@@ -1,58 +1,71 @@
 ﻿using Back_end.Data;
 using Back_end.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Back_end.Controllers
 {
-    // Declara a classe MusicController que herda de Controller
-    public class MusicController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class MusicController : ControllerBase
     {
-        // Declara uma variável privada somente leitura do tipo LiveMusicDbContext
         private readonly LiveMusicDbContext _context;
 
-        // Declara o construtor da classe MusicController que recebe um parâmetro do tipo LiveMusicDbContext
         public MusicController(LiveMusicDbContext context)
         {
-            // Atribui o parâmetro context à variável _context
             _context = context;
         }
 
-        // Declara o método UploadMusic que recebe um parâmetro do tipo IFormFile
-        public IActionResult UploadMusic(IFormFile file)
+        [HttpPost]
+        public async Task<ActionResult<MusicModel>> PostMusic(IFormFile file)
         {
-            // Verifica se o arquivo não é nulo e se o tamanho do arquivo é maior que zero
-            if (file != null && file.Length > 0)
+            if (file == null || file.Length == 0)
             {
-                // Declara uma variável do tipo byte array para armazenar os dados do arquivo
-                byte[] musicData;
-
-                // Cria um objeto BinaryReader para ler os dados do arquivo
-                using (var binaryReader = new BinaryReader(file.OpenReadStream()))
-                {
-                    // Lê os dados do arquivo e atribui à variável musicData
-                    musicData = binaryReader.ReadBytes((int)file.Length);
-                }
-
-                // Cria um novo objeto do tipo MusicModel
-                var music = new MusicModel()
-                {
-                    // Atribui o nome do arquivo à propriedade Name
-                    Name = file.FileName,
-
-                    // Atribui os dados do arquivo à propriedade MusicData
-                    MusicData = musicData
-                };
-
-                // Adiciona o objeto music ao contexto do banco de dados
-                _context.Musics.Add(music);
-
-                // Salva as alterações no banco de dados
-                _context.SaveChanges();
+                return BadRequest("Arquivo não selecionado");
             }
 
-            // Redireciona para a ação Index
-            return RedirectToAction("Index");
+            using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+
+            var music = new MusicModel
+            {
+                Name = file.FileName,
+                MusicData = memoryStream.ToArray()
+            };
+
+            _context.Musics.Add(music);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetMusic", new { id = music.Id }, music);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MusicModel>> GetMusic(int id)
+        {
+            var music = await _context.Musics.FindAsync(id);
+
+            if (music == null)
+            {
+                return NotFound();
+            }
+
+            return music;
+        }
+        
+        [HttpGet("play/{id}")]
+        public async Task<IActionResult> PlayMusic(int id)
+        {
+            var music = await _context.Musics.FindAsync(id);
+
+            if (music == null)
+            {
+                return NotFound();
+            }
+
+            return File(music.MusicData, "audio/mpeg");
         }
     }
+    
 }

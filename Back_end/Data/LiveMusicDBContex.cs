@@ -14,8 +14,9 @@ public class LiveMusicDbContext : DbContext
     public DbSet<PlaylistModel> Playlists { get; set; }
     public DbSet<GroupModel> Groups { get; set; }   
     
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        optionsBuilder.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=postgres");
     }
+    
 }

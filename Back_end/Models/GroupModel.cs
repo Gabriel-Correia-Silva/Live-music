@@ -1,16 +1,13 @@
-﻿namespace Back_end.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Back_end.Models
 {
     public class GroupModel
     {
-        public GroupModel(int idGroup, string nameGroup, UserModel idUsers, PlaylistModel playlist, UserModel adminGroup)
-        {
-            IdGroup = idGroup;
-            NameGroup = nameGroup;
-            IdUsers = idUsers;
-            Playlist = playlist;
-            AdminGroup = adminGroup;
-        }
-
+       
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdGroup { get; set; }
 
         public string NameGroup { get; set; }

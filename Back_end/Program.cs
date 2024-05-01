@@ -1,4 +1,7 @@
 
+using Back_end.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Back_end
 {
     public class Program
@@ -8,6 +11,10 @@ namespace Back_end
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            
+            // Adicione serviços ao contêiner.
+            builder.Services.AddDbContext<LiveMusicDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
