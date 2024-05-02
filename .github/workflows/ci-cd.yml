@@ -20,6 +20,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Back_end/Back_end.csproj
 
+    - name: Clean
+      run: dotnet clean Back_end/Back_end.csproj
+
     - name: Build
       run: dotnet build Back_end/Back_end.csproj --no-restore
 
