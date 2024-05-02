@@ -31,10 +31,3 @@ jobs:
 
     - name: Publish
       run: dotnet publish Back_end/Back_end.csproj -c Release -o ./publish
-
-    - name: Deploy
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'Live-Music'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
-        package: ./publish
