@@ -18,16 +18,16 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Back_end/Back_end.csproj
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build Back_end/Back_end.csproj --no-restore
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Back_end/Back_end.csproj --no-build --verbosity normal
 
     - name: Publish
-      run: dotnet publish --no-build -c Release -o ./publish
+      run: dotnet publish Back_end/Back_end.csproj --no-build -c Release -o ./publish
 
     - name: Deploy
       uses: azure/webapps-deploy@v2
