@@ -30,7 +30,7 @@ jobs:
       run: dotnet test Back_end/Back_end.csproj --no-build --verbosity normal
 
     - name: Publish
-      run: dotnet publish Back_end/Back_end.csproj --no-build -c Release -o ./publish
+      run: dotnet publish Back_end/Back_end.csproj -c Release -o ./publish
 
     - name: Deploy
       uses: azure/webapps-deploy@v2
